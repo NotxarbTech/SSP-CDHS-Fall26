@@ -1,14 +1,20 @@
 import time
 from bmp import *
+from mpu import MPU6050
 from machine import I2C, Pin
 import test_sensors
 import logger
 
-bus = I2C(0, scl = Pin(5), sda = Pin(4), freq = 400000)
-bmp = BMP280(bus, addr = 0x77)
+bmp_bus = I2C(0, scl=Pin(5), sda=Pin(4), freq=400000)
+bmp = BMP280(bmp_bus, addr=0x77)
+
+mpu = MPU6050(sda=2, scl=3)
 
 print(bmp.temperature)
 print(bmp.pressure)
+
+print(mpu.read_accel_data())
+print(mpu.read_temperature())
 
 # Check if sensor log exists on the pico, if not make a new file with headers
 try:
